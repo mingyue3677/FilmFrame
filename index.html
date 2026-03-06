@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FilmFrame · 胶片边框生成器</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+  :root {
+    --bg: #0e0c0a;
+    --surface: #1a1612;
+    --surface2: #221e19;
+    --border: #3a3328;
+    --accent: #c9a96e;
+    --accent2: #8b6f47;
+    --text: #e8ddd0;
+    --text-dim: #7a6f62;
+    --white: #f5f0ea;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'EB Garamond', Georgia, serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Film strip header */
+  .film-strip {
+    height: 28px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .film-hole {
+    width: 14px; height: 14px;
+    border: 2px solid var(--border);
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  header {
+    padding: 32px 40px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    letter-spacing: 0.04em;
+    color: var(--white);
+  }
+  .logo span { color: var(--accent); font-style: italic; }
+  .tagline {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .film-counter {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-align: right;
+  }
+  .film-counter strong {
+    display: block;
+    font-size: 2rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  main {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* ─── Controls Panel ─── */
+  .controls {
+    border-right: 1px solid var(--border);
+    padding: 32px 28px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Upload zone */
+  .upload-zone {
+    border: 1.5px dashed var(--border);
+    border-radius: 4px;
+    padding: 36px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .upload-zone:hover, .upload-zone.drag-over {
+    border-color: var(--accent);
+    background: rgba(201,169,110,0.04);
+  }
+  .upload-zone input { display: none; }
+  .upload-icon {
+    font-size: 2.4rem;
+    margin-bottom: 10px;
+    display: block;
+    opacity: 0.5;
+  }
+  .upload-zone p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; }
+  .upload-zone em { color: var(--accent); font-style: normal; }
+
+  /* Border controls */
+  .border-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .control-group { display: flex; flex-direction: column; gap: 8px; }
+  .control-group label {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+  }
+
+  .color-swatches {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .swatch {
+    width: 28px; height: 28px;
+    border-radius: 3px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s;
+    position: relative;
+  }
+  .swatch.active { border-color: var(--accent); }
+  .swatch-custom {
+    width: 28px; height: 28px;
+    border-radius: 3px;
+    border: 1.5px dashed var(--border);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    overflow: hidden;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+  }
+  .swatch-custom input[type="color"] {
+    position: absolute;
+    opacity: 0;
+    width: 0; height: 0;
+  }
+
+  /* Preset tabs */
+  .preset-tabs {
+    display: flex;
+    gap: 2px;
+    background: var(--surface);
+    border-radius: 4px;
+    padding: 3px;
+    margin-bottom: 12px;
+  }
+  .preset-tab {
+    flex: 1;
+    padding: 6px;
+    text-align: center;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .preset-tab.active {
+    background: var(--surface2);
+    color: var(--accent);
+  }
+
+  .preset-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .preset-btn {
+    padding: 8px 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text);
+    font-family: 'EB Garamond', serif;
+    font-size: 0.82rem;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+    line-height: 1.3;
+  }
+  .preset-btn:hover { border-color: var(--accent2); color: var(--accent); }
+  .preset-btn.active { border-color: var(--accent); background: rgba(201,169,110,0.08); color: var(--accent); }
+  .preset-btn small { display: block; font-size: 0.7rem; color: var(--text-dim); }
+
+  .custom-input-wrap {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+  }
+  .custom-input-wrap input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 8px 12px;
+    color: var(--text);
+    font-family: 'EB Garamond', serif;
+    font-size: 0.88rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .custom-input-wrap input:focus { border-color: var(--accent2); }
+  .custom-input-wrap input::placeholder { color: var(--text-dim); }
+  .apply-btn {
+    padding: 8px 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--accent);
+    font-family: 'EB Garamond', serif;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .apply-btn:hover { border-color: var(--accent); background: rgba(201,169,110,0.1); }
+
+  /* Text style */
+  .font-options {
+    display: flex;
+    gap: 6px;
+  }
+  .font-opt {
+    flex: 1;
+    padding: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    transition: all 0.2s;
+  }
+  .font-opt.active { border-color: var(--accent); color: var(--accent); }
+  .font-opt span { display: block; font-size: 1.1rem; margin-bottom: 2px; }
+
+  /* Text position */
+  .position-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    width: 100px;
+  }
+  .pos-btn {
+    aspect-ratio: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .pos-btn.active { background: var(--accent); border-color: var(--accent); }
+  .pos-btn:hover:not(.active) { border-color: var(--accent2); }
+
+  /* Text size */
+  .size-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .size-row input { flex: 1; }
+  .size-val {
+    font-size: 0.82rem;
+    color: var(--accent);
+    min-width: 30px;
+    text-align: right;
+  }
+
+  /* Separator style */
+  .sep-options {
+    display: flex;
+    gap: 8px;
+  }
+  .sep-btn {
+    flex: 1;
+    padding: 7px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    font-family: monospace;
+  }
+  .sep-btn.active { border-color: var(--accent); color: var(--accent); }
+
+  /* Download button */
+  .download-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    border: none;
+    border-radius: 4px;
+    color: var(--bg);
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .download-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .download-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+
+  /* ─── Preview Panel ─── */
+  .preview-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: #080706;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .preview-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 20% 50%, rgba(201,169,110,0.03) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(139,111,71,0.03) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .preview-label {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .canvas-wrap {
+    max-width: 100%;
+    max-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  canvas {
+    max-width: 100%;
+    max-height: 70vh;
+    object-fit: contain;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+  }
+
+  .empty-state {
+    text-align: center;
+    color: var(--text-dim);
+  }
+  .empty-state .icon {
+    font-size: 4rem;
+    opacity: 0.2;
+    display: block;
+    margin-bottom: 16px;
+  }
+  .empty-state p { font-size: 0.9rem; line-height: 1.7; }
+
+  .preview-info {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="film-strip">
+  <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  <div class="film-hole"></div><div class="film-hole"></div>
+</div>
+
+<header>
+  <div>
+    <div class="logo">Film<span>Frame</span></div>
+    <div class="tagline">胶片边框 · 相机 · 型号标注生成器</div>
+  </div>
+  <div class="film-counter">
+    <strong id="frameCount">00</strong>
+    Frames exported
+  </div>
+</header>
+
+<main>
+  <!-- Controls -->
+  <div class="controls">
+
+    <!-- Upload -->
+    <div>
+      <div class="section-label">01 · 上传胶片照片</div>
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" id="fileInput" accept="image/*">
+        <span class="upload-icon">⬡</span>
+        <p>点击或拖拽上传<br><em>JPG / PNG / WEBP · 任意尺寸</em></p>
+      </div>
+    </div>
+
+    <!-- Border -->
+    <div>
+      <div class="section-label">02 · 边框设置</div>
+      <div class="border-row">
+        <div class="control-group">
+          <label>上下边框宽度</label>
+          <div class="size-row">
+            <input type="range" id="borderTop" min="0" max="300" value="80">
+            <span class="size-val" id="borderTopVal">80</span>
+          </div>
+        </div>
+        <div class="control-group">
+          <label>左右边框宽度</label>
+          <div class="size-row">
+            <input type="range" id="borderSide" min="0" max="200" value="40">
+            <span class="size-val" id="borderSideVal">40</span>
+          </div>
+        </div>
+      </div>
+      <div class="control-group" style="margin-top:14px">
+        <label>边框颜色</label>
+        <div class="color-swatches">
+          <div class="swatch active" style="background:#FFFFFF" data-color="#FFFFFF" title="白"></div>
+          <div class="swatch" style="background:#F5F0EA" data-color="#F5F0EA" title="米白"></div>
+          <div class="swatch" style="background:#1a1612" data-color="#1a1612" title="暗黑"></div>
+          <div class="swatch" style="background:#2C2C2C" data-color="#2C2C2C" title="深灰"></div>
+          <div class="swatch" style="background:#F2E8D9" data-color="#F2E8D9" title="奶油"></div>
+          <div class="swatch" style="background:#E8D5B7" data-color="#E8D5B7" title="黄调米"></div>
+          <div class="swatch-custom" title="自定义">
+            <span>＋</span>
+            <input type="color" id="customColor" value="#FFFFFF">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Camera -->
+    <div>
+      <div class="section-label">03 · 相机品牌</div>
+      <div class="preset-tabs">
+        <div class="preset-tab active" data-panel="camera">预设</div>
+        <div class="preset-tab" data-panel="camera-custom">自定义</div>
+      </div>
+      <div id="camera-panel" class="preset-grid">
+        <div class="preset-btn active" data-camera="Leica"><small>Leica</small>M6 / M7 / M8</div>
+        <div class="preset-btn" data-camera="Contax"><small>Contax</small>T2 / G2</div>
+        <div class="preset-btn" data-camera="Nikon"><small>Nikon</small>F3 / FM2 / FE2</div>
+        <div class="preset-btn" data-camera="Canon"><small>Canon</small>AE-1 / F-1</div>
+        <div class="preset-btn" data-camera="Olympus"><small>Olympus</small>OM-1 / XA</div>
+        <div class="preset-btn" data-camera="Minolta"><small>Minolta</small>CLE / X-700</div>
+        <div class="preset-btn" data-camera="Lomo"><small>Lomo</small>LC-A / Diana</div>
+        <div class="preset-btn" data-camera="Rollei"><small>Rollei</small>35 / 35S</div>
+        <div class="preset-btn" data-camera="Pentax"><small>Pentax</small>K1000 / ME</div>
+        <div class="preset-btn" data-camera="Voigtländer"><small>Voigtländer</small>Bessa R</div>
+      </div>
+      <div id="camera-custom-panel" style="display:none">
+        <div class="custom-input-wrap">
+          <input type="text" id="cameraCustomInput" placeholder="输入相机品牌，如 Hasselblad 500C">
+          <button class="apply-btn" id="applyCameraCustom">确认</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Film -->
+    <div>
+      <div class="section-label">04 · 胶片型号</div>
+      <div class="preset-tabs">
+        <div class="preset-tab active" data-panel="film">预设</div>
+        <div class="preset-tab" data-panel="film-custom">自定义</div>
+      </div>
+      <div id="film-panel" class="preset-grid">
+        <div class="preset-btn active" data-film="Kodak Portra 400">Kodak<small>Portra 400</small></div>
+        <div class="preset-btn" data-film="Kodak Portra 160">Kodak<small>Portra 160</small></div>
+        <div class="preset-btn" data-film="Kodak Gold 200">Kodak<small>Gold 200</small></div>
+        <div class="preset-btn" data-film="Kodak Ultramax 400">Kodak<small>Ultramax 400</small></div>
+        <div class="preset-btn" data-film="Fujifilm Pro 400H">Fujifilm<small>Pro 400H</small></div>
+        <div class="preset-btn" data-film="Fujifilm Superia 400">Fujifilm<small>Superia 400</small></div>
+        <div class="preset-btn" data-film="Fujifilm Velvia 50">Fujifilm<small>Velvia 50</small></div>
+        <div class="preset-btn" data-film="Ilford HP5 Plus">Ilford<small>HP5 Plus 400</small></div>
+        <div class="preset-btn" data-film="Ilford Delta 3200">Ilford<small>Delta 3200</small></div>
+        <div class="preset-btn" data-film="Cinestill 800T">Cinestill<small>800T</small></div>
+        <div class="preset-btn" data-film="Cinestill 50D">Cinestill<small>50D</small></div>
+        <div class="preset-btn" data-film="Kodak Ektachrome E100">Kodak<small>Ektachrome E100</small></div>
+      </div>
+      <div id="film-custom-panel" style="display:none">
+        <div class="custom-input-wrap">
+          <input type="text" id="filmCustomInput" placeholder="输入胶片型号，如 Lomography 800">
+          <button class="apply-btn" id="applyFilmCustom">确认</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Text Style -->
+    <div>
+      <div class="section-label">05 · 文字样式</div>
+      <div class="control-group" style="margin-bottom:12px">
+        <label>字体风格</label>
+        <div class="font-options">
+          <div class="font-opt active" data-font="serif" style="font-family:Georgia,serif">
+            <span>Aa</span>衬线体
+          </div>
+          <div class="font-opt" data-font="mono" style="font-family:monospace">
+            <span>Aa</span>等宽体
+          </div>
+          <div class="font-opt" data-font="sans" style="font-family:Helvetica,sans-serif">
+            <span>Aa</span>无衬线
+          </div>
+        </div>
+      </div>
+      <div class="control-group" style="margin-bottom:12px">
+        <label>分隔符</label>
+        <div class="sep-options">
+          <div class="sep-btn active" data-sep=" / "> / </div>
+          <div class="sep-btn" data-sep=" · "> · </div>
+          <div class="sep-btn" data-sep="  ">空格</div>
+          <div class="sep-btn" data-sep=" | "> | </div>
+        </div>
+      </div>
+      <div class="control-group" style="margin-bottom:12px">
+        <label>文字颜色</label>
+        <div class="color-swatches">
+          <div class="swatch active" style="background:#1a1612" data-textcolor="#1a1612" title="黑"></div>
+          <div class="swatch" style="background:#555555" data-textcolor="#555555" title="深灰"></div>
+          <div class="swatch" style="background:#AAAAAA" data-textcolor="#AAAAAA" title="浅灰"></div>
+          <div class="swatch" style="background:#FFFFFF; border:1px solid #555" data-textcolor="#FFFFFF" title="白"></div>
+          <div class="swatch" style="background:#c9a96e" data-textcolor="#c9a96e" title="金"></div>
+        </div>
+      </div>
+      <div class="control-group" style="margin-bottom:12px">
+        <label>字号</label>
+        <div class="size-row">
+          <input type="range" id="fontSize" min="12" max="80" value="28">
+          <span class="size-val" id="fontSizeVal">28</span>
+        </div>
+      </div>
+      <div class="control-group">
+        <label>文字位置</label>
+        <div style="display:flex;align-items:center;gap:16px;margin-top:4px">
+          <div class="position-grid" id="posGrid">
+            <div class="pos-btn" data-pos="top-left"></div>
+            <div class="pos-btn" data-pos="top-center"></div>
+            <div class="pos-btn" data-pos="top-right"></div>
+            <div class="pos-btn" data-pos="mid-left"></div>
+            <div class="pos-btn" data-pos="mid-center"></div>
+            <div class="pos-btn" data-pos="mid-right"></div>
+            <div class="pos-btn active" data-pos="bottom-left"></div>
+            <div class="pos-btn" data-pos="bottom-center"></div>
+            <div class="pos-btn" data-pos="bottom-right"></div>
+          </div>
+          <span style="font-size:0.78rem;color:var(--text-dim);line-height:1.5">点击选择<br>文字位置</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Download -->
+    <button class="download-btn" id="downloadBtn" disabled>
+      ↓ 导出 · Export Frame
+    </button>
+
+  </div>
+
+  <!-- Preview -->
+  <div class="preview-panel">
+    <div class="preview-label">P R E V I E W</div>
+    <div class="canvas-wrap">
+      <div class="empty-state" id="emptyState">
+        <span class="icon">◈</span>
+        <p>上传一张胶片照片<br>开始生成你的专属边框</p>
+      </div>
+      <canvas id="canvas" style="display:none"></canvas>
+    </div>
+    <div class="preview-info" id="previewInfo"></div>
+  </div>
+</main>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const fileInput = document.getElementById('fileInput');
+const uploadZone = document.getElementById('uploadZone');
+const downloadBtn = document.getElementById('downloadBtn');
+const emptyState = document.getElementById('emptyState');
+const previewInfo = document.getElementById('previewInfo');
+
+let img = null;
+let state = {
+  borderColor: '#FFFFFF',
+  textColor: '#1a1612',
+  borderTop: 80,
+  borderSide: 40,
+  camera: 'Leica',
+  film: 'Kodak Portra 400',
+  font: 'serif',
+  separator: ' / ',
+  fontSize: 28,
+  position: 'bottom-left',
+  frameCount: 0
+};
+
+const fontMap = {
+  'serif': 'Georgia, "Times New Roman", serif',
+  'mono': '"Courier New", Courier, monospace',
+  'sans': 'Helvetica, Arial, sans-serif'
+};
+
+// Upload
+uploadZone.addEventListener('click', () => fileInput.click());
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault();
+  uploadZone.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) loadImage(file);
+});
+fileInput.addEventListener('change', e => { if (e.target.files[0]) loadImage(e.target.files[0]); });
+
+function loadImage(file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    const image = new Image();
+    image.onload = () => {
+      img = image;
+      emptyState.style.display = 'none';
+      canvas.style.display = 'block';
+      downloadBtn.disabled = false;
+      render();
+    };
+    image.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// Render
+function render() {
+  if (!img) return;
+  const { borderTop, borderSide, borderColor, camera, film, separator, font, fontSize, position, textColor } = state;
+  const w = img.width + borderSide * 2;
+  const h = img.height + borderTop * 2;
+  canvas.width = w;
+  canvas.height = h;
+
+  // Border fill
+  ctx.fillStyle = borderColor;
+  ctx.fillRect(0, 0, w, h);
+
+  // Image
+  ctx.drawImage(img, borderSide, borderTop, img.width, img.height);
+
+  // Text
+  if (borderTop > 8 || borderSide > 8) {
+    const text = `${camera}${separator}${film}`;
+    const fs = fontSize;
+    ctx.font = `${fs}px ${fontMap[font]}`;
+    ctx.fillStyle = textColor;
+    ctx.textBaseline = 'middle';
+
+    const textW = ctx.measureText(text).width;
+    const pad = Math.max(borderSide, 20);
+    const midY = borderTop / 2;
+    const botY = h - borderTop / 2;
+    const midX = w / 2;
+
+    let x, y;
+    const posMap = {
+      'top-left':    [pad, midY],
+      'top-center':  [midX - textW/2, midY],
+      'top-right':   [w - pad - textW, midY],
+      'mid-left':    [pad, h/2],
+      'mid-center':  [midX - textW/2, h/2],
+      'mid-right':   [w - pad - textW, h/2],
+      'bottom-left': [pad, botY],
+      'bottom-center':[midX - textW/2, botY],
+      'bottom-right':[w - pad - textW, botY],
+    };
+    [x, y] = posMap[position] || [pad, botY];
+    ctx.fillText(text, x, y);
+  }
+
+  // Update preview info
+  previewInfo.textContent = `${w} × ${h} px · ${camera} · ${film}`;
+}
+
+// Sliders
+document.getElementById('borderTop').addEventListener('input', function() {
+  state.borderTop = +this.value;
+  document.getElementById('borderTopVal').textContent = this.value;
+  render();
+});
+document.getElementById('borderSide').addEventListener('input', function() {
+  state.borderSide = +this.value;
+  document.getElementById('borderSideVal').textContent = this.value;
+  render();
+});
+document.getElementById('fontSize').addEventListener('input', function() {
+  state.fontSize = +this.value;
+  document.getElementById('fontSizeVal').textContent = this.value;
+  render();
+});
+
+// Border color swatches
+document.querySelectorAll('.swatch[data-color]').forEach(s => {
+  s.addEventListener('click', () => {
+    document.querySelectorAll('.swatch[data-color]').forEach(x => x.classList.remove('active'));
+    s.classList.add('active');
+    state.borderColor = s.dataset.color;
+    render();
+  });
+});
+
+// Custom border color
+document.querySelector('.swatch-custom').addEventListener('click', () => {
+  document.getElementById('customColor').click();
+});
+document.getElementById('customColor').addEventListener('input', function() {
+  state.borderColor = this.value;
+  document.querySelectorAll('.swatch[data-color]').forEach(x => x.classList.remove('active'));
+  render();
+});
+
+// Text color
+document.querySelectorAll('.swatch[data-textcolor]').forEach(s => {
+  s.addEventListener('click', () => {
+    document.querySelectorAll('.swatch[data-textcolor]').forEach(x => x.classList.remove('active'));
+    s.classList.add('active');
+    state.textColor = s.dataset.textcolor;
+    render();
+  });
+});
+
+// Preset tabs
+document.querySelectorAll('.preset-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    const panel = this.dataset.panel;
+    const parentTabs = this.parentElement.querySelectorAll('.preset-tab');
+    parentTabs.forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+    const isCustom = panel.includes('custom');
+    const base = isCustom ? panel.replace('-custom', '') : panel;
+    document.getElementById(base + '-panel').style.display = isCustom ? 'none' : 'grid';
+    document.getElementById(base + '-custom-panel').style.display = isCustom ? 'block' : 'none';
+  });
+});
+
+// Camera presets
+document.querySelectorAll('[data-camera]').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('[data-camera]').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    state.camera = this.dataset.camera;
+    render();
+  });
+});
+
+// Film presets
+document.querySelectorAll('[data-film]').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('[data-film]').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    state.film = this.dataset.film;
+    render();
+  });
+});
+
+// Custom camera
+document.getElementById('applyCameraCustom').addEventListener('click', () => {
+  const val = document.getElementById('cameraCustomInput').value.trim();
+  if (val) { state.camera = val; render(); }
+});
+
+// Custom film
+document.getElementById('applyFilmCustom').addEventListener('click', () => {
+  const val = document.getElementById('filmCustomInput').value.trim();
+  if (val) { state.film = val; render(); }
+});
+
+// Font
+document.querySelectorAll('.font-opt').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.font-opt').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    state.font = this.dataset.font;
+    render();
+  });
+});
+
+// Separator
+document.querySelectorAll('.sep-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.sep-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    state.separator = this.dataset.sep;
+    render();
+  });
+});
+
+// Position
+document.querySelectorAll('.pos-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.pos-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    state.position = this.dataset.pos;
+    render();
+  });
+});
+
+// Download
+downloadBtn.addEventListener('click', () => {
+  if (!img) return;
+  render();
+  const link = document.createElement('a');
+  link.download = `filmframe_${state.camera}_${state.film.replace(/\s/g,'_')}.jpg`;
+  link.href = canvas.toDataURL('image/jpeg', 0.96);
+  link.click();
+  state.frameCount++;
+  document.getElementById('frameCount').textContent = String(state.frameCount).padStart(2,'0');
+});
+</script>
+</body>
+</html>
