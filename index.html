@@ -30,7 +30,6 @@
     flex-direction: column;
   }
 
-  /* Film strip header */
   .film-strip {
     height: 28px;
     background: var(--surface);
@@ -55,43 +54,14 @@
     align-items: flex-end;
     justify-content: space-between;
   }
-  .logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.2rem;
-    letter-spacing: 0.04em;
-    color: var(--white);
-  }
+  .logo { font-family: 'Playfair Display', serif; font-size: 2.2rem; letter-spacing: 0.04em; color: var(--white); }
   .logo span { color: var(--accent); font-style: italic; }
-  .tagline {
-    font-size: 0.85rem;
-    color: var(--text-dim);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-top: 4px;
-  }
-  .film-counter {
-    font-family: 'Playfair Display', serif;
-    font-size: 0.75rem;
-    color: var(--text-dim);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    text-align: right;
-  }
-  .film-counter strong {
-    display: block;
-    font-size: 2rem;
-    color: var(--accent);
-    line-height: 1;
-  }
+  .tagline { font-size: 0.85rem; color: var(--text-dim); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 4px; }
+  .film-counter { font-family: 'Playfair Display', serif; font-size: 0.75rem; color: var(--text-dim); letter-spacing: 0.2em; text-transform: uppercase; text-align: right; }
+  .film-counter strong { display: block; font-size: 2rem; color: var(--accent); line-height: 1; }
 
-  main {
-    display: grid;
-    grid-template-columns: 380px 1fr;
-    flex: 1;
-    min-height: 0;
-  }
+  main { display: grid; grid-template-columns: 380px 1fr; flex: 1; min-height: 0; }
 
-  /* ─── Controls Panel ─── */
   .controls {
     border-right: 1px solid var(--border);
     padding: 32px 28px;
@@ -111,14 +81,8 @@
     align-items: center;
     gap: 10px;
   }
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-  /* Upload zone */
   .upload-zone {
     border: 1.5px dashed var(--border);
     border-radius: 4px;
@@ -128,325 +92,139 @@
     transition: all 0.3s ease;
     position: relative;
   }
-  .upload-zone:hover, .upload-zone.drag-over {
-    border-color: var(--accent);
-    background: rgba(201,169,110,0.04);
-  }
+  .upload-zone:hover, .upload-zone.drag-over { border-color: var(--accent); background: rgba(201,169,110,0.04); }
   .upload-zone input { display: none; }
-  .upload-icon {
-    font-size: 2.4rem;
-    margin-bottom: 10px;
-    display: block;
-    opacity: 0.5;
-  }
+  .upload-icon { font-size: 2.4rem; margin-bottom: 10px; display: block; opacity: 0.5; }
   .upload-zone p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; }
   .upload-zone em { color: var(--accent); font-style: normal; }
 
-  /* Border controls */
-  .border-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
+  .border-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .control-group { display: flex; flex-direction: column; gap: 8px; }
-  .control-group label {
-    font-size: 0.78rem;
-    color: var(--text-dim);
-    letter-spacing: 0.06em;
-  }
+  .control-group label { font-size: 0.78rem; color: var(--text-dim); letter-spacing: 0.06em; }
 
-  input[type="range"] {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 3px;
-    background: var(--border);
-    border-radius: 2px;
-    outline: none;
-  }
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 14px; height: 14px;
-    border-radius: 50%;
-    background: var(--accent);
-    cursor: pointer;
-  }
+  input[type="range"] { -webkit-appearance: none; width: 100%; height: 3px; background: var(--border); border-radius: 2px; outline: none; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); cursor: pointer; }
 
-  .color-swatches {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .swatch {
-    width: 28px; height: 28px;
-    border-radius: 3px;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: border-color 0.2s;
-    position: relative;
-  }
+  .color-swatches { display: flex; gap: 8px; flex-wrap: wrap; }
+  .swatch { width: 28px; height: 28px; border-radius: 3px; cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s; position: relative; }
   .swatch.active { border-color: var(--accent); }
-  .swatch-custom {
-    width: 28px; height: 28px;
-    border-radius: 3px;
-    border: 1.5px dashed var(--border);
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    overflow: hidden;
-    font-size: 0.7rem;
-    color: var(--text-dim);
-  }
-  .swatch-custom input[type="color"] {
-    position: absolute;
-    opacity: 0;
-    width: 0; height: 0;
-  }
+  .swatch-custom { width: 28px; height: 28px; border-radius: 3px; border: 1.5px dashed var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; font-size: 0.7rem; color: var(--text-dim); position: relative; }
+  .swatch-custom input[type="color"] { position: absolute; opacity: 0; width: 0; height: 0; }
 
-  /* Preset tabs */
-  .preset-tabs {
-    display: flex;
-    gap: 2px;
-    background: var(--surface);
-    border-radius: 4px;
-    padding: 3px;
-    margin-bottom: 12px;
-  }
-  .preset-tab {
-    flex: 1;
-    padding: 6px;
-    text-align: center;
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    color: var(--text-dim);
-    cursor: pointer;
-    border-radius: 3px;
-    transition: all 0.2s;
-    text-transform: uppercase;
-  }
-  .preset-tab.active {
-    background: var(--surface2);
-    color: var(--accent);
-  }
+  .preset-tabs { display: flex; gap: 2px; background: var(--surface); border-radius: 4px; padding: 3px; margin-bottom: 12px; }
+  .preset-tab { flex: 1; padding: 6px; text-align: center; font-size: 0.72rem; letter-spacing: 0.08em; color: var(--text-dim); cursor: pointer; border-radius: 3px; transition: all 0.2s; text-transform: uppercase; }
+  .preset-tab.active { background: var(--surface2); color: var(--accent); }
 
-  .preset-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-  }
-  .preset-btn {
-    padding: 8px 10px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    color: var(--text);
-    font-family: 'EB Garamond', serif;
-    font-size: 0.82rem;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.2s;
-    line-height: 1.3;
-  }
+  .preset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .preset-btn { padding: 8px 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 3px; color: var(--text); font-family: 'EB Garamond', serif; font-size: 0.82rem; cursor: pointer; text-align: left; transition: all 0.2s; line-height: 1.3; }
   .preset-btn:hover { border-color: var(--accent2); color: var(--accent); }
   .preset-btn.active { border-color: var(--accent); background: rgba(201,169,110,0.08); color: var(--accent); }
   .preset-btn small { display: block; font-size: 0.7rem; color: var(--text-dim); }
 
-  .custom-input-wrap {
-    margin-top: 10px;
-    display: flex;
-    gap: 8px;
-  }
-  .custom-input-wrap input {
-    flex: 1;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 8px 12px;
-    color: var(--text);
-    font-family: 'EB Garamond', serif;
-    font-size: 0.88rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
+  .custom-input-wrap { margin-top: 10px; display: flex; gap: 8px; }
+  .custom-input-wrap input { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 8px 12px; color: var(--text); font-family: 'EB Garamond', serif; font-size: 0.88rem; outline: none; transition: border-color 0.2s; }
   .custom-input-wrap input:focus { border-color: var(--accent2); }
   .custom-input-wrap input::placeholder { color: var(--text-dim); }
-  .apply-btn {
-    padding: 8px 14px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    color: var(--accent);
-    font-family: 'EB Garamond', serif;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
+  .apply-btn { padding: 8px 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: 3px; color: var(--accent); font-family: 'EB Garamond', serif; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
   .apply-btn:hover { border-color: var(--accent); background: rgba(201,169,110,0.1); }
 
-  /* Text style */
-  .font-options {
-    display: flex;
-    gap: 6px;
-  }
-  .font-opt {
-    flex: 1;
-    padding: 8px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    text-align: center;
-    cursor: pointer;
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    transition: all 0.2s;
-  }
+  .font-options { display: flex; gap: 6px; }
+  .font-opt { flex: 1; padding: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 3px; text-align: center; cursor: pointer; font-size: 0.8rem; color: var(--text-dim); transition: all 0.2s; }
   .font-opt.active { border-color: var(--accent); color: var(--accent); }
   .font-opt span { display: block; font-size: 1.1rem; margin-bottom: 2px; }
 
-  /* Text position */
-  .position-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4px;
-    width: 100px;
-  }
-  .pos-btn {
-    aspect-ratio: 1;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
+  .position-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100px; }
+  .pos-btn { aspect-ratio: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 2px; cursor: pointer; transition: all 0.2s; }
   .pos-btn.active { background: var(--accent); border-color: var(--accent); }
   .pos-btn:hover:not(.active) { border-color: var(--accent2); }
 
-  /* Text size */
-  .size-row {
+  .size-row { display: flex; align-items: center; gap: 12px; }
+  .size-row input { flex: 1; }
+  .size-val { font-size: 0.82rem; color: var(--accent); min-width: 30px; text-align: right; }
+
+  .sep-options { display: flex; gap: 8px; }
+  .sep-btn { flex: 1; padding: 7px; background: var(--surface); border: 1px solid var(--border); border-radius: 3px; color: var(--text-dim); font-size: 0.8rem; cursor: pointer; text-align: center; transition: all 0.2s; font-family: monospace; }
+  .sep-btn.active { border-color: var(--accent); color: var(--accent); }
+
+  /* ─── Template Section ─── */
+  .tpl-save-row { display: flex; gap: 8px; margin-bottom: 12px; }
+  .tpl-name-input { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 9px 12px; color: var(--text); font-family: 'EB Garamond', serif; font-size: 0.88rem; outline: none; transition: border-color 0.2s; }
+  .tpl-name-input:focus { border-color: var(--accent2); }
+  .tpl-name-input::placeholder { color: var(--text-dim); }
+  .tpl-save-btn { padding: 9px 14px; background: rgba(201,169,110,0.12); border: 1px solid var(--accent2); border-radius: 3px; color: var(--accent); font-family: 'EB Garamond', serif; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .tpl-save-btn:hover { background: rgba(201,169,110,0.2); }
+
+  .tpl-list { display: flex; flex-direction: column; gap: 6px; }
+  .tpl-item {
     display: flex;
     align-items: center;
-    gap: 12px;
-  }
-  .size-row input { flex: 1; }
-  .size-val {
-    font-size: 0.82rem;
-    color: var(--accent);
-    min-width: 30px;
-    text-align: right;
-  }
-
-  /* Separator style */
-  .sep-options {
-    display: flex;
     gap: 8px;
-  }
-  .sep-btn {
-    flex: 1;
-    padding: 7px;
+    padding: 10px 12px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 3px;
-    color: var(--text-dim);
-    font-size: 0.8rem;
     cursor: pointer;
-    text-align: center;
     transition: all 0.2s;
-    font-family: monospace;
   }
-  .sep-btn.active { border-color: var(--accent); color: var(--accent); }
+  .tpl-item:hover { border-color: var(--accent2); }
+  .tpl-item.active-tpl { border-color: var(--accent); background: rgba(201,169,110,0.06); }
+  .tpl-item-name { flex: 1; font-size: 0.85rem; color: var(--text); }
+  .tpl-item-meta { font-size: 0.7rem; color: var(--text-dim); }
+  .tpl-del { padding: 2px 6px; background: transparent; border: none; color: var(--text-dim); cursor: pointer; font-size: 0.9rem; border-radius: 2px; transition: color 0.2s; }
+  .tpl-del:hover { color: #c97a7a; }
+  .tpl-empty { font-size: 0.82rem; color: var(--text-dim); text-align: center; padding: 16px; border: 1px dashed var(--border); border-radius: 3px; line-height: 1.6; }
 
-  /* Download button */
-  .download-btn {
-    width: 100%;
-    padding: 14px;
-    background: linear-gradient(135deg, var(--accent2), var(--accent));
-    border: none;
+  /* Batch section */
+  .batch-upload-zone {
+    border: 1.5px dashed var(--border);
     border-radius: 4px;
-    color: var(--bg);
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    letter-spacing: 0.08em;
+    padding: 20px;
+    text-align: center;
     cursor: pointer;
-    transition: all 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+    margin-bottom: 10px;
   }
+  .batch-upload-zone:hover { border-color: var(--accent); background: rgba(201,169,110,0.04); }
+  .batch-upload-zone input { display: none; }
+  .batch-upload-zone p { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; }
+  .batch-upload-zone em { color: var(--accent); font-style: normal; }
+
+  .batch-info { font-size: 0.82rem; color: var(--text-dim); margin-bottom: 10px; display: none; }
+  .batch-info strong { color: var(--accent); }
+
+  .batch-tpl-select { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 9px 12px; color: var(--text); font-family: 'EB Garamond', serif; font-size: 0.85rem; outline: none; cursor: pointer; margin-bottom: 10px; }
+  .batch-tpl-select option { background: var(--surface2); }
+
+  .batch-btn { width: 100%; padding: 11px; background: var(--surface2); border: 1px solid var(--accent2); border-radius: 3px; color: var(--accent); font-family: 'Playfair Display', serif; font-size: 0.9rem; letter-spacing: 0.06em; cursor: pointer; transition: all 0.2s; }
+  .batch-btn:hover { background: rgba(201,169,110,0.1); }
+  .batch-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  .batch-progress { display: none; margin-top: 10px; }
+  .batch-progress-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 6px; }
+  .batch-progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s; width: 0%; }
+  .batch-progress-text { font-size: 0.75rem; color: var(--text-dim); text-align: center; }
+
+  /* Download */
+  .download-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--accent2), var(--accent)); border: none; border-radius: 4px; color: var(--bg); font-family: 'Playfair Display', serif; font-size: 1rem; letter-spacing: 0.08em; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
   .download-btn:hover { opacity: 0.9; transform: translateY(-1px); }
   .download-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
 
-  /* ─── Preview Panel ─── */
-  .preview-panel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-    background: #080706;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .preview-panel::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: 
-      radial-gradient(ellipse at 20% 50%, rgba(201,169,110,0.03) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 20%, rgba(139,111,71,0.03) 0%, transparent 50%);
-    pointer-events: none;
-  }
-
-  .preview-label {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.65rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-  }
-
-  .canvas-wrap {
-    max-width: 100%;
-    max-height: 70vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  canvas {
-    max-width: 100%;
-    max-height: 70vh;
-    object-fit: contain;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.8);
-  }
-
-  .empty-state {
-    text-align: center;
-    color: var(--text-dim);
-  }
-  .empty-state .icon {
-    font-size: 4rem;
-    opacity: 0.2;
-    display: block;
-    margin-bottom: 16px;
-  }
+  /* Preview */
+  .preview-panel { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; background: #080706; position: relative; overflow: hidden; }
+  .preview-panel::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 50%, rgba(201,169,110,0.03) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(139,111,71,0.03) 0%, transparent 50%); pointer-events: none; }
+  .preview-label { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-dim); }
+  .canvas-wrap { max-width: 100%; max-height: 70vh; display: flex; align-items: center; justify-content: center; }
+  canvas { max-width: 100%; max-height: 70vh; object-fit: contain; box-shadow: 0 20px 60px rgba(0,0,0,0.8); }
+  .empty-state { text-align: center; color: var(--text-dim); }
+  .empty-state .icon { font-size: 4rem; opacity: 0.2; display: block; margin-bottom: 16px; }
   .empty-state p { font-size: 0.9rem; line-height: 1.7; }
+  .preview-info { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 0.65rem; letter-spacing: 0.2em; color: var(--text-dim); white-space: nowrap; }
 
-  .preview-info {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    color: var(--text-dim);
-    white-space: nowrap;
-  }
+  /* Toast */
+  .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--surface2); border: 1px solid var(--accent2); border-radius: 4px; padding: 10px 20px; font-size: 0.85rem; color: var(--accent); opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 999; white-space: nowrap; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* scrollbar */
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
@@ -476,10 +254,9 @@
 </header>
 
 <main>
-  <!-- Controls -->
   <div class="controls">
 
-    <!-- Upload -->
+    <!-- 01 Upload -->
     <div>
       <div class="section-label">01 · 上传胶片照片</div>
       <div class="upload-zone" id="uploadZone">
@@ -489,7 +266,7 @@
       </div>
     </div>
 
-    <!-- Border -->
+    <!-- 02 Border -->
     <div>
       <div class="section-label">02 · 边框设置</div>
       <div class="border-row">
@@ -525,7 +302,7 @@
       </div>
     </div>
 
-    <!-- Camera -->
+    <!-- 03 Camera -->
     <div>
       <div class="section-label">03 · 相机品牌</div>
       <div class="preset-tabs">
@@ -552,7 +329,7 @@
       </div>
     </div>
 
-    <!-- Film -->
+    <!-- 04 Film -->
     <div>
       <div class="section-label">04 · 胶片型号</div>
       <div class="preset-tabs">
@@ -581,21 +358,15 @@
       </div>
     </div>
 
-    <!-- Text Style -->
+    <!-- 05 Text Style -->
     <div>
       <div class="section-label">05 · 文字样式</div>
       <div class="control-group" style="margin-bottom:12px">
         <label>字体风格</label>
         <div class="font-options">
-          <div class="font-opt active" data-font="serif" style="font-family:Georgia,serif">
-            <span>Aa</span>衬线体
-          </div>
-          <div class="font-opt" data-font="mono" style="font-family:monospace">
-            <span>Aa</span>等宽体
-          </div>
-          <div class="font-opt" data-font="sans" style="font-family:Helvetica,sans-serif">
-            <span>Aa</span>无衬线
-          </div>
+          <div class="font-opt active" data-font="serif" style="font-family:Georgia,serif"><span>Aa</span>衬线体</div>
+          <div class="font-opt" data-font="mono" style="font-family:monospace"><span>Aa</span>等宽体</div>
+          <div class="font-opt" data-font="sans" style="font-family:Helvetica,sans-serif"><span>Aa</span>无衬线</div>
         </div>
       </div>
       <div class="control-group" style="margin-bottom:12px">
@@ -643,6 +414,36 @@
       </div>
     </div>
 
+    <!-- 06 Templates -->
+    <div>
+      <div class="section-label">06 · 我的模版</div>
+      <div class="tpl-save-row">
+        <input type="text" class="tpl-name-input" id="tplNameInput" placeholder="为当前设置取个名字…">
+        <button class="tpl-save-btn" id="tplSaveBtn">保存模版</button>
+      </div>
+      <div class="tpl-list" id="tplList">
+        <div class="tpl-empty" id="tplEmpty">还没有保存的模版<br><em style="font-size:0.75rem;color:var(--accent2)">调好参数后取名保存，下次一键套用</em></div>
+      </div>
+    </div>
+
+    <!-- 07 Batch -->
+    <div>
+      <div class="section-label">07 · 批量处理</div>
+      <div class="batch-upload-zone" id="batchUploadZone">
+        <input type="file" id="batchFileInput" accept="image/*" multiple>
+        <p>点击选择多张照片<br><em>可同时选择多个文件</em></p>
+      </div>
+      <div class="batch-info" id="batchInfo">已选择 <strong id="batchCount">0</strong> 张照片</div>
+      <select class="batch-tpl-select" id="batchTplSelect">
+        <option value="__current__">使用当前设置</option>
+      </select>
+      <button class="batch-btn" id="batchBtn" disabled>批量导出全部</button>
+      <div class="batch-progress" id="batchProgress">
+        <div class="batch-progress-bar"><div class="batch-progress-fill" id="batchFill"></div></div>
+        <div class="batch-progress-text" id="batchProgressText">处理中…</div>
+      </div>
+    </div>
+
     <!-- Download -->
     <button class="download-btn" id="downloadBtn" disabled>
       ↓ 导出 · Export Frame
@@ -663,6 +464,8 @@
     <div class="preview-info" id="previewInfo"></div>
   </div>
 </main>
+
+<div class="toast" id="toast"></div>
 
 <script>
 const canvas = document.getElementById('canvas');
@@ -689,20 +492,26 @@ let state = {
 };
 
 const fontMap = {
-  'serif': 'Georgia, "Times New Roman", serif',
-  'mono': '"Courier New", Courier, monospace',
-  'sans': 'Helvetica, Arial, sans-serif'
+  serif: 'Georgia, "Times New Roman", serif',
+  mono: '"Courier New", Courier, monospace',
+  sans: 'Helvetica, Arial, sans-serif'
 };
 
-// Upload
+// ── Toast ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ── Upload single ──
 uploadZone.addEventListener('click', () => fileInput.click());
 uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
 uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
 uploadZone.addEventListener('drop', e => {
-  e.preventDefault();
-  uploadZone.classList.remove('drag-over');
-  const file = e.dataTransfer.files[0];
-  if (file) loadImage(file);
+  e.preventDefault(); uploadZone.classList.remove('drag-over');
+  if (e.dataTransfer.files[0]) loadImage(e.dataTransfer.files[0]);
 });
 fileInput.addEventListener('change', e => { if (e.target.files[0]) loadImage(e.target.files[0]); });
 
@@ -722,37 +531,26 @@ function loadImage(file) {
   reader.readAsDataURL(file);
 }
 
-// Render
-function render() {
-  if (!img) return;
-  const { borderTop, borderSide, borderColor, camera, film, separator, font, fontSize, position, textColor } = state;
-  const w = img.width + borderSide * 2;
-  const h = img.height + borderTop * 2;
-  canvas.width = w;
-  canvas.height = h;
-
-  // Border fill
-  ctx.fillStyle = borderColor;
-  ctx.fillRect(0, 0, w, h);
-
-  // Image
-  ctx.drawImage(img, borderSide, borderTop, img.width, img.height);
-
-  // Text
-  if (borderTop > 8 || borderSide > 8) {
-    const text = `${camera}${separator}${film}`;
-    const fs = fontSize;
-    ctx.font = `${fs}px ${fontMap[font]}`;
-    ctx.fillStyle = textColor;
-    ctx.textBaseline = 'middle';
-
-    const textW = ctx.measureText(text).width;
-    const pad = Math.max(borderSide, 20);
-    const midY = borderTop / 2;
-    const botY = h - borderTop / 2;
+// ── Render ──
+function renderToCanvas(targetCanvas, image, s) {
+  const c = targetCanvas.getContext('2d');
+  const w = image.width + s.borderSide * 2;
+  const h = image.height + s.borderTop * 2;
+  targetCanvas.width = w;
+  targetCanvas.height = h;
+  c.fillStyle = s.borderColor;
+  c.fillRect(0, 0, w, h);
+  c.drawImage(image, s.borderSide, s.borderTop, image.width, image.height);
+  if (s.borderTop > 8 || s.borderSide > 8) {
+    const text = `${s.camera}${s.separator}${s.film}`;
+    c.font = `${s.fontSize}px ${fontMap[s.font]}`;
+    c.fillStyle = s.textColor;
+    c.textBaseline = 'middle';
+    const textW = c.measureText(text).width;
+    const pad = Math.max(s.borderSide, 20);
+    const midY = s.borderTop / 2;
+    const botY = h - s.borderTop / 2;
     const midX = w / 2;
-
-    let x, y;
     const posMap = {
       'top-left':    [pad, midY],
       'top-center':  [midX - textW/2, midY],
@@ -764,15 +562,18 @@ function render() {
       'bottom-center':[midX - textW/2, botY],
       'bottom-right':[w - pad - textW, botY],
     };
-    [x, y] = posMap[position] || [pad, botY];
-    ctx.fillText(text, x, y);
+    const [x, y] = posMap[s.position] || [pad, botY];
+    c.fillText(text, x, y);
   }
-
-  // Update preview info
-  previewInfo.textContent = `${w} × ${h} px · ${camera} · ${film}`;
 }
 
-// Sliders
+function render() {
+  if (!img) return;
+  renderToCanvas(canvas, img, state);
+  previewInfo.textContent = `${canvas.width} × ${canvas.height} px · ${state.camera} · ${state.film}`;
+}
+
+// ── Sliders ──
 document.getElementById('borderTop').addEventListener('input', function() {
   state.borderTop = +this.value;
   document.getElementById('borderTopVal').textContent = this.value;
@@ -789,7 +590,7 @@ document.getElementById('fontSize').addEventListener('input', function() {
   render();
 });
 
-// Border color swatches
+// ── Border color ──
 document.querySelectorAll('.swatch[data-color]').forEach(s => {
   s.addEventListener('click', () => {
     document.querySelectorAll('.swatch[data-color]').forEach(x => x.classList.remove('active'));
@@ -798,18 +599,14 @@ document.querySelectorAll('.swatch[data-color]').forEach(s => {
     render();
   });
 });
-
-// Custom border color
-document.querySelector('.swatch-custom').addEventListener('click', () => {
-  document.getElementById('customColor').click();
-});
+document.querySelector('.swatch-custom').addEventListener('click', () => document.getElementById('customColor').click());
 document.getElementById('customColor').addEventListener('input', function() {
   state.borderColor = this.value;
   document.querySelectorAll('.swatch[data-color]').forEach(x => x.classList.remove('active'));
   render();
 });
 
-// Text color
+// ── Text color ──
 document.querySelectorAll('.swatch[data-textcolor]').forEach(s => {
   s.addEventListener('click', () => {
     document.querySelectorAll('.swatch[data-textcolor]').forEach(x => x.classList.remove('active'));
@@ -819,12 +616,11 @@ document.querySelectorAll('.swatch[data-textcolor]').forEach(s => {
   });
 });
 
-// Preset tabs
+// ── Preset tabs ──
 document.querySelectorAll('.preset-tab').forEach(tab => {
   tab.addEventListener('click', function() {
     const panel = this.dataset.panel;
-    const parentTabs = this.parentElement.querySelectorAll('.preset-tab');
-    parentTabs.forEach(t => t.classList.remove('active'));
+    this.parentElement.querySelectorAll('.preset-tab').forEach(t => t.classList.remove('active'));
     this.classList.add('active');
     const isCustom = panel.includes('custom');
     const base = isCustom ? panel.replace('-custom', '') : panel;
@@ -833,7 +629,7 @@ document.querySelectorAll('.preset-tab').forEach(tab => {
   });
 });
 
-// Camera presets
+// ── Camera ──
 document.querySelectorAll('[data-camera]').forEach(btn => {
   btn.addEventListener('click', function() {
     document.querySelectorAll('[data-camera]').forEach(b => b.classList.remove('active'));
@@ -842,8 +638,12 @@ document.querySelectorAll('[data-camera]').forEach(btn => {
     render();
   });
 });
+document.getElementById('applyCameraCustom').addEventListener('click', () => {
+  const val = document.getElementById('cameraCustomInput').value.trim();
+  if (val) { state.camera = val; render(); }
+});
 
-// Film presets
+// ── Film ──
 document.querySelectorAll('[data-film]').forEach(btn => {
   btn.addEventListener('click', function() {
     document.querySelectorAll('[data-film]').forEach(b => b.classList.remove('active'));
@@ -852,20 +652,12 @@ document.querySelectorAll('[data-film]').forEach(btn => {
     render();
   });
 });
-
-// Custom camera
-document.getElementById('applyCameraCustom').addEventListener('click', () => {
-  const val = document.getElementById('cameraCustomInput').value.trim();
-  if (val) { state.camera = val; render(); }
-});
-
-// Custom film
 document.getElementById('applyFilmCustom').addEventListener('click', () => {
   const val = document.getElementById('filmCustomInput').value.trim();
   if (val) { state.film = val; render(); }
 });
 
-// Font
+// ── Font / Sep / Pos ──
 document.querySelectorAll('.font-opt').forEach(btn => {
   btn.addEventListener('click', function() {
     document.querySelectorAll('.font-opt').forEach(b => b.classList.remove('active'));
@@ -874,8 +666,6 @@ document.querySelectorAll('.font-opt').forEach(btn => {
     render();
   });
 });
-
-// Separator
 document.querySelectorAll('.sep-btn').forEach(btn => {
   btn.addEventListener('click', function() {
     document.querySelectorAll('.sep-btn').forEach(b => b.classList.remove('active'));
@@ -884,8 +674,6 @@ document.querySelectorAll('.sep-btn').forEach(btn => {
     render();
   });
 });
-
-// Position
 document.querySelectorAll('.pos-btn').forEach(btn => {
   btn.addEventListener('click', function() {
     document.querySelectorAll('.pos-btn').forEach(b => b.classList.remove('active'));
@@ -895,7 +683,7 @@ document.querySelectorAll('.pos-btn').forEach(btn => {
   });
 });
 
-// Download
+// ── Download single ──
 downloadBtn.addEventListener('click', () => {
   if (!img) return;
   render();
@@ -906,7 +694,235 @@ downloadBtn.addEventListener('click', () => {
   state.frameCount++;
   document.getElementById('frameCount').textContent = String(state.frameCount).padStart(2,'0');
 });
+
+// ════════════════════════════════
+//  TEMPLATE SYSTEM
+// ════════════════════════════════
+const STORAGE_KEY = 'filmframe_templates';
+
+function getTemplates() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch { return []; }
+}
+function saveTemplates(tpls) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(tpls));
+}
+
+function getStateSnapshot() {
+  return {
+    borderColor: state.borderColor,
+    textColor: state.textColor,
+    borderTop: state.borderTop,
+    borderSide: state.borderSide,
+    camera: state.camera,
+    film: state.film,
+    font: state.font,
+    separator: state.separator,
+    fontSize: state.fontSize,
+    position: state.position,
+  };
+}
+
+function applyTemplate(tpl) {
+  // Apply state
+  Object.assign(state, tpl.settings);
+
+  // Sync UI — sliders
+  document.getElementById('borderTop').value = state.borderTop;
+  document.getElementById('borderTopVal').textContent = state.borderTop;
+  document.getElementById('borderSide').value = state.borderSide;
+  document.getElementById('borderSideVal').textContent = state.borderSide;
+  document.getElementById('fontSize').value = state.fontSize;
+  document.getElementById('fontSizeVal').textContent = state.fontSize;
+
+  // Border color swatch
+  document.querySelectorAll('.swatch[data-color]').forEach(s => {
+    s.classList.toggle('active', s.dataset.color === state.borderColor);
+  });
+  document.getElementById('customColor').value = state.borderColor;
+
+  // Text color swatch
+  document.querySelectorAll('.swatch[data-textcolor]').forEach(s => {
+    s.classList.toggle('active', s.dataset.textcolor === state.textColor);
+  });
+
+  // Font
+  document.querySelectorAll('.font-opt').forEach(b => b.classList.toggle('active', b.dataset.font === state.font));
+
+  // Sep
+  document.querySelectorAll('.sep-btn').forEach(b => b.classList.toggle('active', b.dataset.sep === state.separator));
+
+  // Position
+  document.querySelectorAll('.pos-btn').forEach(b => b.classList.toggle('active', b.dataset.pos === state.position));
+
+  // Camera — check preset or set custom
+  const camMatch = document.querySelector(`[data-camera="${state.camera}"]`);
+  document.querySelectorAll('[data-camera]').forEach(b => b.classList.remove('active'));
+  if (camMatch) {
+    camMatch.classList.add('active');
+  } else {
+    document.getElementById('cameraCustomInput').value = state.camera;
+  }
+
+  // Film — check preset or set custom
+  const filmMatch = document.querySelector(`[data-film="${state.film}"]`);
+  document.querySelectorAll('[data-film]').forEach(b => b.classList.remove('active'));
+  if (filmMatch) {
+    filmMatch.classList.add('active');
+  } else {
+    document.getElementById('filmCustomInput').value = state.film;
+  }
+
+  render();
+}
+
+function renderTemplateList() {
+  const tpls = getTemplates();
+  const list = document.getElementById('tplList');
+  const empty = document.getElementById('tplEmpty');
+  const batchSelect = document.getElementById('batchTplSelect');
+
+  // Rebuild batch select options (keep first "current" option)
+  while (batchSelect.options.length > 1) batchSelect.remove(1);
+
+  if (tpls.length === 0) {
+    empty.style.display = 'block';
+    list.querySelectorAll('.tpl-item').forEach(el => el.remove());
+    return;
+  }
+  empty.style.display = 'none';
+
+  // Clear old items
+  list.querySelectorAll('.tpl-item').forEach(el => el.remove());
+
+  tpls.forEach((tpl, i) => {
+    // List item
+    const item = document.createElement('div');
+    item.className = 'tpl-item';
+    item.innerHTML = `
+      <div class="tpl-item-name">${tpl.name}</div>
+      <div class="tpl-item-meta">${tpl.settings.camera} · ${tpl.settings.film}</div>
+      <button class="tpl-del" data-index="${i}" title="删除">✕</button>
+    `;
+    item.addEventListener('click', (e) => {
+      if (e.target.classList.contains('tpl-del')) return;
+      document.querySelectorAll('.tpl-item').forEach(x => x.classList.remove('active-tpl'));
+      item.classList.add('active-tpl');
+      applyTemplate(tpl);
+      showToast(`已套用模版「${tpl.name}」`);
+    });
+    item.querySelector('.tpl-del').addEventListener('click', () => {
+      const tpls2 = getTemplates();
+      tpls2.splice(i, 1);
+      saveTemplates(tpls2);
+      renderTemplateList();
+      showToast('模版已删除');
+    });
+    list.appendChild(item);
+
+    // Batch select option
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = tpl.name;
+    batchSelect.appendChild(opt);
+  });
+}
+
+// Save template
+document.getElementById('tplSaveBtn').addEventListener('click', () => {
+  const name = document.getElementById('tplNameInput').value.trim();
+  if (!name) { showToast('请先给模版取个名字 🥺'); return; }
+  const tpls = getTemplates();
+  // Check duplicate name
+  const exists = tpls.findIndex(t => t.name === name);
+  if (exists >= 0) {
+    tpls[exists].settings = getStateSnapshot();
+    saveTemplates(tpls);
+    showToast(`模版「${name}」已更新 ✦`);
+  } else {
+    tpls.push({ name, settings: getStateSnapshot() });
+    saveTemplates(tpls);
+    showToast(`模版「${name}」已保存 ✦`);
+  }
+  document.getElementById('tplNameInput').value = '';
+  renderTemplateList();
+});
+
+// Init template list on load
+renderTemplateList();
+
+// ════════════════════════════════
+//  BATCH PROCESSING
+// ════════════════════════════════
+let batchFiles = [];
+
+document.getElementById('batchUploadZone').addEventListener('click', () => {
+  document.getElementById('batchFileInput').click();
+});
+
+document.getElementById('batchFileInput').addEventListener('change', function() {
+  batchFiles = Array.from(this.files);
+  const info = document.getElementById('batchInfo');
+  const btn = document.getElementById('batchBtn');
+  if (batchFiles.length > 0) {
+    document.getElementById('batchCount').textContent = batchFiles.length;
+    info.style.display = 'block';
+    btn.disabled = false;
+  }
+});
+
+document.getElementById('batchBtn').addEventListener('click', async () => {
+  if (!batchFiles.length) return;
+
+  // Determine settings to use
+  const selectVal = document.getElementById('batchTplSelect').value;
+  let batchSettings;
+  if (selectVal === '__current__') {
+    batchSettings = getStateSnapshot();
+  } else {
+    const tpls = getTemplates();
+    batchSettings = tpls[parseInt(selectVal)]?.settings || getStateSnapshot();
+  }
+
+  const progressWrap = document.getElementById('batchProgress');
+  const fill = document.getElementById('batchFill');
+  const progressText = document.getElementById('batchProgressText');
+  progressWrap.style.display = 'block';
+  document.getElementById('batchBtn').disabled = true;
+
+  // Process files one by one with a small delay to keep UI responsive
+  for (let i = 0; i < batchFiles.length; i++) {
+    const file = batchFiles[i];
+    progressText.textContent = `正在处理 ${i + 1} / ${batchFiles.length}`;
+    fill.style.width = `${Math.round(((i) / batchFiles.length) * 100)}%`;
+
+    await new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const image = new Image();
+        image.onload = () => {
+          const tempCanvas = document.createElement('canvas');
+          renderToCanvas(tempCanvas, image, batchSettings);
+          const link = document.createElement('a');
+          const baseName = file.name.replace(/\.[^.]+$/, '');
+          link.download = `filmframe_${baseName}_${batchSettings.camera.replace(/\s/g,'_')}.jpg`;
+          link.href = tempCanvas.toDataURL('image/jpeg', 0.96);
+          link.click();
+          state.frameCount++;
+          document.getElementById('frameCount').textContent = String(state.frameCount).padStart(2,'0');
+          setTimeout(resolve, 300); // small delay between downloads
+        };
+        image.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  fill.style.width = '100%';
+  progressText.textContent = `✦ 全部完成！共导出 ${batchFiles.length} 张`;
+  document.getElementById('batchBtn').disabled = false;
+  showToast(`批量导出完成，共 ${batchFiles.length} 张 ✦`);
+});
 </script>
 </body>
 </html>
-
